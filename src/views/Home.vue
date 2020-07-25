@@ -4,6 +4,7 @@
       alt="Vue logo"
       src="../assets/logo.png"
     >
+    <h1>Coordenadas</h1>
     <h2>{{latitud}}</h2>
     <h2>{{longitude}}</h2>
     <QrcodeStream
