@@ -11,15 +11,16 @@
       class="aaa"
       @decode="onDecode"
     ></QrcodeStream>
+    <h1>decoded String</h1>
+    <h2>{{decodedString}}</h2>
 
-    <QrcodeCapture @decode="onDecode" />
     <!--    <QrcodeDropZone @decode="onDecode" /> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import { QrcodeStream, QrcodeCapture } from "vue-qrcode-reader";
+import { QrcodeStream } from "vue-qrcode-reader";
 export default {
   name: "Home",
   created() {
@@ -39,16 +40,16 @@ export default {
     return {
       latitud: 0,
       longitude: 0,
+      decodedString: "Analiza un código Qr",
     };
   },
   components: {
     QrcodeStream,
-
-    QrcodeCapture,
   },
   methods: {
     onDecode(decodedString) {
       console.log(decodedString);
+      this.decodedString = decodedString;
       // ...  console.log(decodedString);
     },
   },
