@@ -1,0 +1,26 @@
+@import "@/assets/styles/global.scss";
+
+.preloader {
+  margin-left: auto;
+  margin-right: auto;
+  border: 10px solid #f9fdf7;
+  border-top: 10px solid #2c59d8;
+  border-radius: 50%;
+  animation-name: girar;
+  animation-duration: 1.8s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

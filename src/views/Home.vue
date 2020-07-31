@@ -1,50 +1,44 @@
 <template>
-  <div class="home">
-    <img
-      alt="Vue logo"
-      src="../assets/logo.png"
+  <div class="app-container">
+    <AppNav titlePage="Marcar Asistencia" />
+    <div
+      v-if="!isQrActive"
+      class="grid grid-cols-2 sm:grid-cols-4 mx-3 py-5 gap-5  menu"
     >
-    <h1>Coordenadas</h1>
-    <h2>{{latitud}}</h2>
-    <h2>{{longitude}}</h2>
+      <BaseCardMarcar
+        v-for="(menu,index) in menus"
+        :key="index"
+        :title="menu.title"
+        :imagenSrc="menu.imagenSrc"
+      />
+    </div>
     <QrcodeStream
-      class="aaa"
+      v-else
+      class="menu"
       @decode="onDecode"
     ></QrcodeStream>
-    <h1>decoded String</h1>
-    <h2>{{decodedString}}</h2>
+    <AppNavBottom v-if="!isQrActive" />
 
-    <!--    <QrcodeDropZone @decode="onDecode" /> -->
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
+import AppNav from "@/components/AppNav";
+import AppNavBottom from "@/components/AppNavBottom";
 import { QrcodeStream } from "vue-qrcode-reader";
+
 export default {
-  name: "Home",
-  created() {
-    if (navigator.geolocation) {
-      console.log(navigator.geolocation);
-      navigator.geolocation.getCurrentPosition((funcExito) => {
-        console.log(funcExito);
-        this.latitud = funcExito.coords.latitude;
-        this.longitude = funcExito.coords.longitude;
-        console.log("funcExito");
-      });
-    } else {
-      // No hay soporte para la geolocalización: podemos desistir o utilizar algún método alternativo
-    }
-  },
+  components: { AppNav, AppNavBottom, QrcodeStream },
   data() {
     return {
-      latitud: 0,
-      longitude: 0,
-      decodedString: "Analiza un código Qr",
+      isQrActive: true,
+      menus: [
+        { title: "Ingreso", imagenSrc: "ingreso_marcatition.jpg" },
+        { title: "Salida", imagenSrc: "salida_marcation.jpg" },
+        { title: "Refrigerio", imagenSrc: "LunchTime.jpg" },
+        { title: "Retorno", imagenSrc: "Retorno_Work.png" },
+      ],
     };
-  },
-  components: {
-    QrcodeStream,
   },
   methods: {
     onDecode(decodedString) {
@@ -55,10 +49,14 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-.aaa {
-  width: 100px;
-  height: 100px;
-  color: red;
+
+<style lang="scss" scoped>
+.app-container {
+  min-height: 90vh;
+  display: flex;
+}
+.menu {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 </style>
