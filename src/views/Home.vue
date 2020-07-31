@@ -1,5 +1,8 @@
 <template>
-  <div class="app-container">
+  <div
+    class="app-container"
+    :class="{'is-black':isQrActive }"
+  >
     <AppNav titlePage="Marcar Asistencia" />
     <div
       v-if="!isQrActive"
@@ -14,7 +17,7 @@
     </div>
     <QrcodeStream
       v-else
-      class="menu"
+      class="menu bg-black"
       @decode="onDecode"
     ></QrcodeStream>
     <AppNavBottom v-if="!isQrActive" />
@@ -54,6 +57,10 @@ export default {
 .app-container {
   min-height: 90vh;
   display: flex;
+}
+.is-black {
+  background-color: black;
+  min-height: 100vh;
 }
 .menu {
   margin-top: auto;
