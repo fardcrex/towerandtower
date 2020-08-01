@@ -29,6 +29,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    logout({ commit }) {
+      commit("LOGOUT");
+    },
     async login({ commit }, credentials) {
       const resUser = await authService.postLogin(credentials);
       console.log(resUser);

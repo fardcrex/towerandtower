@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import LoginPage from "../views/LoginPage.vue";
+import ReportesPage from "../views/ReportesPage.vue";
+import NotificacionesPage from "../views/NotificacionesPage.vue";
 
 Vue.use(VueRouter);
 
@@ -10,6 +12,18 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/Reportes",
+    name: "Reportes",
+    component: ReportesPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/Notificaciones",
+    name: "Notificaciones",
+    component: NotificacionesPage,
     meta: { requiresAuth: true },
   },
   {

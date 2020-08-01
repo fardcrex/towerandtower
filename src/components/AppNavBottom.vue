@@ -9,7 +9,7 @@
     </router-link>
     <router-link
       class="mt-1"
-      to="/reportes"
+      to="/Reportes"
     >
       <span class="block mt-2">📄</span>
       <span>Reportes</span>
@@ -17,7 +17,7 @@
     </router-link>
     <router-link
       class="mt-1"
-      to="/notificaciones"
+      to="/Notificaciones"
     >
       <span class="block mt-2">🔔</span>
       <span>Notificaciones</span>

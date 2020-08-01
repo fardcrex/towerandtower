@@ -55,6 +55,7 @@ new Vue({
       this.$store.commit("SET_TIME_TOKEN_DATA", timeToken);
     }
     axios.interceptors.request.use(async (request) => {
+      console.log(request);
       const timeCreationOfToken = this.$store.state.timeToken;
       const now = new Date();
       if (
@@ -80,7 +81,6 @@ new Vue({
     });
     axios.interceptors.response.use(
       (response) => {
-        console.log(response);
         if (
           response.data.message === "Autenticación fallida!" &&
           response.data.success === false

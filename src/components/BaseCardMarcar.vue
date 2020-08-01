@@ -1,6 +1,9 @@
 <template>
 
-  <div class="neumorphic-card">
+  <div
+    class="neumorphic-card"
+    @click="goToCamera"
+  >
     <div>
       <div class="neumorphic-card__outer">
         <img
@@ -25,8 +28,15 @@ export default {
     title: {
       type: String,
     },
+    tipo: {
+      type: String,
+    },
   },
-
+  methods: {
+    goToCamera() {
+      this.$emit("openToCamera", this.tipo);
+    },
+  },
   name: "BaseCardMarcar",
 };
 </script>

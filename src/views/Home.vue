@@ -3,23 +3,20 @@
     class="app-container"
     :class="{'is-black':isQrActive }"
   >
-    <AppNav titlePage="Marcar Asistencia" />
-    <div
+    <AppNav
+      :titlePage="title"
+      :isLoad="isLoad"
+    />
+    <MenuMarcacion
+      class="menu"
+      @sendMensaje="sendMensaje"
+      @isQrActive="isQrActiveChange"
+      @loaded="loaded"
+    />
+    <p
       v-if="!isQrActive"
-      class="grid grid-cols-2 sm:grid-cols-4 mx-3 py-5 gap-5  menu"
-    >
-      <BaseCardMarcar
-        v-for="(menu,index) in menus"
-        :key="index"
-        :title="menu.title"
-        :imagenSrc="menu.imagenSrc"
-      />
-    </div>
-    <QrcodeStream
-      v-else
-      class="menu bg-black"
-      @decode="onDecode"
-    ></QrcodeStream>
+      class="span-2"
+    >{{mensaje}}</p>
     <AppNavBottom v-if="!isQrActive" />
 
   </div>
@@ -27,27 +24,34 @@
 
 <script>
 import AppNav from "@/components/AppNav";
+import MenuMarcacion from "@/components/MenuMarcacion";
 import AppNavBottom from "@/components/AppNavBottom";
-import { QrcodeStream } from "vue-qrcode-reader";
 
 export default {
-  components: { AppNav, AppNavBottom, QrcodeStream },
+  components: { AppNav, AppNavBottom, MenuMarcacion },
+  computed: {
+    title() {
+      if (this.isLoad) return "Procesando código Qr...";
+      if (this.isQrActive) return "Escanea el código Qr";
+      return "Marcar Asistencia";
+    },
+  },
   data() {
     return {
-      isQrActive: true,
-      menus: [
-        { title: "Ingreso", imagenSrc: "ingreso_marcatition.jpg" },
-        { title: "Salida", imagenSrc: "salida_marcation.jpg" },
-        { title: "Refrigerio", imagenSrc: "LunchTime.jpg" },
-        { title: "Retorno", imagenSrc: "Retorno_Work.png" },
-      ],
+      mensaje: "",
+      isLoad: false,
+      isQrActive: false,
     };
   },
   methods: {
-    onDecode(decodedString) {
-      console.log(decodedString);
-      this.decodedString = decodedString;
-      // ...  console.log(decodedString);
+    sendMensaje(mensaje) {
+      this.mensaje = mensaje;
+    },
+    loaded(isLoad) {
+      this.isLoad = isLoad;
+    },
+    isQrActiveChange(isActive) {
+      this.isQrActive = isActive;
     },
   },
 };
@@ -57,6 +61,7 @@ export default {
 .app-container {
   min-height: 90vh;
   display: flex;
+  flex-direction: column;
 }
 .is-black {
   background-color: black;

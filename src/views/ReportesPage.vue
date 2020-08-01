@@ -1,11 +1,21 @@
 <template>
   <div>
-    <h1>Reporte</h1>
+    <AppNav :titlePage="title" />
+    <AppNavBottom />
   </div>
 </template>
 
 <script>
-export default {};
+import AppNav from "@/components/AppNav";
+import AppNavBottom from "@/components/AppNavBottom";
+export default {
+  components: { AppNav, AppNavBottom },
+  data() {
+    return {
+      title: "Reportes",
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
