@@ -16,6 +16,7 @@
     v-else
     class="menu bg-black"
     @decode="onDecode"
+    @init="onInit"
   ></QrcodeStream>
 </template>
 
@@ -61,7 +62,13 @@ export default {
     onDecode(decodedString) {
       console.log(decodedString);
       this.decodedString = decodedString;
-      this.registrarMarcacion();
+      if (decodedString) {
+        this.registrarMarcacion();
+      } else {
+        this.$emit("isQrActive", false);
+        this.isQrActive = false;
+        this.$emit("sendMensaje", "No se encontró el código");
+      }
       // ...  console.log(decodedString);
     },
     openToCamera(tipo) {
@@ -121,6 +128,45 @@ export default {
             }
           }
         );
+      }
+    },
+    async onInit(promise) {
+      console.log("error");
+      try {
+        await promise;
+      } catch (error) {
+        console.log(error);
+        this.$emit("isQrActive", false);
+        this.isQrActive = false;
+        if (error.name === "NotAllowedError") {
+          this.$emit(
+            "sendMensaje",
+            "ERROR: necesita conceder permiso de acceso a la cámara."
+          );
+        } else if (error.name === "NotFoundError") {
+          this.$emit(
+            "sendMensaje",
+            "ERROR: necesita conceder permiso de acceso a la cámara."
+          );
+          this.error = "ERROR: no camera on this device";
+        } else if (error.name === "NotSupportedError") {
+          this.$emit(
+            "sendMensaje",
+            "ERROR: Se requiere un contexto seguro (HTTPS, localhost)."
+          );
+        } else if (error.name === "NotReadableError") {
+          this.$emit("sendMensaje", "ERROR:¿La cámara ya está en uso?");
+        } else if (error.name === "OverconstrainedError") {
+          this.$emit(
+            "sendMensaje",
+            "ERROR: las cámaras instaladas no son adecuadas."
+          );
+        } else if (error.name === "StreamApiNotSupportedError") {
+          this.$emit(
+            "sendMensaje",
+            "ERROR: Stream API no es compatible con este navegador."
+          );
+        }
       }
     },
   },

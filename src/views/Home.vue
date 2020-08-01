@@ -47,7 +47,7 @@ export default {
       this.mensaje = mensaje;
       setTimeout(() => {
         this.mensaje = "";
-      }, 4000);
+      }, 6000);
     },
     loaded(isLoad) {
       this.isLoad = isLoad;
