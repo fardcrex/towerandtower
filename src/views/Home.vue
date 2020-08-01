@@ -7,16 +7,15 @@
       :titlePage="title"
       :isLoad="isLoad"
     />
-    <MenuMarcacion
-      class="menu"
-      @sendMensaje="sendMensaje"
-      @isQrActive="isQrActiveChange"
-      @loaded="loaded"
-    />
-    <p
-      v-if="!isQrActive"
-      class="span-2"
-    >{{mensaje}}</p>
+    <div class="menu">
+      <MenuMarcacion
+        @sendMensaje="sendMensaje"
+        @isQrActive="isQrActiveChange"
+        @loaded="loaded"
+      />
+      <p>{{mensaje}}</p>
+    </div>
+
     <AppNavBottom v-if="!isQrActive" />
 
   </div>
@@ -46,6 +45,9 @@ export default {
   methods: {
     sendMensaje(mensaje) {
       this.mensaje = mensaje;
+      setTimeout(() => {
+        this.mensaje = "";
+      }, 4000);
     },
     loaded(isLoad) {
       this.isLoad = isLoad;
