@@ -60,9 +60,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/global.scss";
 .app-container {
-  min-height: 90vh;
+  height: 95vh;
   display: flex;
+  background-color: $color-card;
   flex-direction: column;
 }
 .is-black {

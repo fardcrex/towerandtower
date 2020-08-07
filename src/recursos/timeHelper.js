@@ -15,9 +15,9 @@ function getFormatTime(value) {
 function getFormatFecha(time) {
   if (time) {
     let date = new Date(time);
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, `;
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
   } else {
-    return "0/0/0";
+    return "0-0-0";
   }
 }
 export { getFormatTime, getFormatFecha };

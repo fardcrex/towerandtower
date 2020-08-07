@@ -6,9 +6,7 @@
     <BaseCardMarcar
       v-for="(menu,index) in menus"
       :key="index"
-      :title="menu.title"
-      :tipo="menu.tipo"
-      :imagenSrc="menu.imagenSrc"
+      :menu="menu"
       @openToCamera="openToCamera"
     />
   </div>
@@ -24,6 +22,7 @@
 import { mapState } from "vuex";
 import { QrcodeStream } from "vue-qrcode-reader";
 import RegistroService from "@/services/RegistroService.js";
+import NotificacionService from "@/services/NotificacionService.js";
 export default {
   components: {
     QrcodeStream,
@@ -36,26 +35,42 @@ export default {
     },
     ...mapState({
       empleado_dni: (state) => state.user.empleado_dni,
+      empleado_all_name: (state) =>
+        state.user.empleado_nombre + " " + state.user.empleado_apellido,
     }),
-  },
-  data() {
-    return {
-      isQrActive: false,
-      tipo: "",
-      menus: [
+    menus() {
+      return [
         {
           title: "Ingreso",
           imagenSrc: "ingreso_marcatition.jpg",
           tipo: "Ingreso",
+          body: `El trabajador ${this.empleado_all_name} acaba de marcar su Ingreso`,
         },
-        { title: "Salida", imagenSrc: "salida_marcation.jpg", tipo: "Retiro" },
-        { title: "Refrigerio", imagenSrc: "LunchTime.jpg", tipo: "Refrigerio" },
+        {
+          title: "Salida",
+          imagenSrc: "salida_marcation.jpg",
+          tipo: "Retiro",
+          body: `El trabajador ${this.empleado_all_name} acaba de marcar su Salida`,
+        },
+        {
+          title: "Refrigerio",
+          imagenSrc: "LunchTime.jpg",
+          tipo: "Refrigerio",
+          body: `El trabajador ${this.empleado_all_name} acaba de marcar su Refrigerio`,
+        },
         {
           title: "Retorno",
           imagenSrc: "Retorno_Work.png",
           tipo: "Retorno de refrigerio",
+          body: `El trabajador ${this.empleado_all_name} acaba de marcar su Retorno`,
         },
-      ],
+      ];
+    },
+  },
+  data() {
+    return {
+      isQrActive: false,
+      menu: "",
     };
   },
   methods: {
@@ -71,10 +86,10 @@ export default {
       }
       // ...  console.log(decodedString);
     },
-    openToCamera(tipo) {
+    openToCamera(menu) {
       this.isQrActive = true;
       this.$emit("isQrActive", true);
-      this.tipo = tipo;
+      this.menu = menu;
     },
     registrarMarcacion() {
       this.$emit("loaded", true);
@@ -82,19 +97,29 @@ export default {
         navigator.geolocation.getCurrentPosition(
           async (funcExito) => {
             console.log(funcExito);
+            const fechaRegistro = new Date().toJSON();
+            const { latitude, longitude } = funcExito.coords;
             try {
               const res = await RegistroService.registrarMarcacion({
-                idTelefono: "desdeNavegadorWeb",
+                idTelefono: this.empleado_dni,
                 dni: this.empleado_dni,
-                latitud: `${funcExito.coords.latitude}`,
-                longitud: `${funcExito.coords.longitude}`,
+                latitud: `${latitude}`,
+                longitud: `${longitude}`,
                 dataQr: `${this.decodedString}`,
-                fechahora: new Date().toJSON(),
-                tipo: this.tipo,
-                motivo: this.tipo,
+                fechahora: fechaRegistro,
+                tipo: this.menu.tipo,
+                motivo: this.menu.tipo,
                 temperatura: 0,
               });
-              console.log("ads", res);
+              const res2 = await NotificacionService.registerNotificacion({
+                fechahora: fechaRegistro,
+                latitud: `${latitude}`,
+                longitud: `${longitude}`,
+                titulo: this.menu.title,
+                cuerpo: this.menu.body,
+                idTelefono: this.empleado_dni,
+              });
+              console.log(res2, res);
               this.$emit("sendMensaje", "Se marcó con éxito");
             } catch (error) {
               this.$emit("sendMensaje", error);

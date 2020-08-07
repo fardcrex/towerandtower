@@ -8,11 +8,11 @@
       <div class="neumorphic-card__outer">
         <img
           class="neumorphic-image"
-          :src="require(`@/assets/${imagenSrc}`)"
+          :src="require(`@/assets/${menu.imagenSrc}`)"
         />
 
       </div>
-      <div class="neumorphic-card__title">{{title}}</div>
+      <div class="neumorphic-card__title">{{menu.title}}</div>
 
     </div>
   </div>
@@ -22,19 +22,13 @@
 <script>
 export default {
   props: {
-    imagenSrc: {
-      type: String,
-    },
-    title: {
-      type: String,
-    },
-    tipo: {
-      type: String,
+    menu: {
+      type: Object,
     },
   },
   methods: {
     goToCamera() {
-      this.$emit("openToCamera", this.tipo);
+      this.$emit("openToCamera", this.menu);
     },
   },
   name: "BaseCardMarcar",
@@ -48,10 +42,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: $color-card;
+  background-color: $color-white;
   padding: 30px 22px 0 22px;
-  box-shadow: $shadow-neumorphic;
-  border-radius: 15px;
+  box-shadow: $shadow-app-nav;
+  border-radius: 10px;
   height: minmax(280px, auto);
   width: auto;
 }

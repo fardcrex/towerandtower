@@ -1,5 +1,15 @@
 <template>
-  <div id="nav">
+  <div
+    id="nav"
+    :class="{isBack:isBack}"
+  >
+    <img
+      @click="back"
+      v-if="isBack"
+      src="../assets/espalda.png"
+      alt="flecha"
+      class="img"
+    >
     <h1 class="title text-xl ml-2">{{titlePage}}</h1>
     <div
       v-if="isLoad"
@@ -20,13 +30,24 @@ export default {
       type: Boolean,
       default: false,
     },
+    isBack: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    back() {
+      this.$emit("onBack");
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/global.scss";
-
+.img {
+  margin: 0 0.5em;
+}
 .preloader {
   width: 30px;
   height: 30px;
@@ -35,14 +56,16 @@ export default {
   border-top: 8px solid #2c59d8;
 }
 #nav {
+  box-shadow: $shadow-app-nav;
   position: fixed;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 50px;
+  min-height: 60px;
   min-width: 100%;
+  z-index: 100;
   margin: auto;
-  padding: 0.2em 0.6em;
+  padding: 0.3em 0.6em;
   background-color: $color-primary;
   @media screen and (min-width: $tablet) {
   }
@@ -56,5 +79,8 @@ export default {
 }
 .title {
   color: $color-white;
+}
+.isBack {
+  justify-content: start !important;
 }
 </style>

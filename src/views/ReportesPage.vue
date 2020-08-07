@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container ">
     <AppNav :titlePage="title" />
     <AppNavBottom />
   </div>
@@ -19,4 +19,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/global.scss";
+.app-container {
+  background-color: $color-card;
+  min-height: calc(100vh - 60px);
+}
 </style>

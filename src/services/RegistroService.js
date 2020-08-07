@@ -15,4 +15,10 @@ export default {
       credentials
     );
   },
+  registerNotificacion(credentials) {
+    return axios.post(
+      `${servers.produccion}/registro/registroNotificacion`,
+      credentials
+    );
+  },
 };
