@@ -72,9 +72,6 @@ new Vue({
           userData.token = data.newtoken;
           localStorage.setItem("usuario", JSON.stringify(userData));
           AuthService.postRegistrarToken(data.newtoken, data.id);
-        } else {
-          this.$store.dispatch("logout");
-          return Promise.reject("bad token");
         }
       }
       return request;
